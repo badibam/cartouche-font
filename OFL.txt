@@ -1,5 +1,6 @@
 Copyright (c) 2020 Jesse D. Jimenez (jdj.jdjimenez@gmail.com,
 @jaydeejim.bsky.social, jdjimenez.itch.io, gumroad.com/jdjimenez)
+Copyright (c) 2026 badibam — Cartouche, modified from Mono10.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
