@@ -10,6 +10,7 @@ from collections import namedtuple
 from pathlib import Path
 
 from fontTools.fontBuilder import FontBuilder
+from fontTools.misc.timeTools import timestampFromString
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 
 from pixelfont import (ROOT, BOTTOM_PX, CAP_PX, CELL_W, GLYPHS, PX, TOP_PX, UPEM, X_PX,
@@ -26,6 +27,9 @@ Box = namedtuple("Box", "family cell_w top bottom")
 LETTERS = Box(FAMILY, CELL_W, TOP_PX, BOTTOM_PX)
 BIG = Box(f"{FAMILY} Big", 22, 21, 0)
 VERSION = "1.000"
+# A fixed date, so the same maps always compile to the same bytes: an app checks
+# its copy byte for byte, and a clock in the file would make every rebuild new.
+STAMP = timestampFromString("Tue Sep 29 00:00:00 2026")
 COPYRIGHT = (
     "Derived from Mono10 by Michael Vieth (Community Pack), "
     "licensed under the SIL Open Font License 1.1."
@@ -140,6 +144,7 @@ def build(weight, maps, out_path, box=LETTERS):
         sCapHeight=CAP_PX * PX, sxHeight=X_PX * PX, usWeightClass=weight_class,
     )
     builder.setupPost(isFixedPitch=1)
+    builder.font["head"].created = builder.font["head"].modified = STAMP
     builder.save(out_path)
     return len(order)
 
