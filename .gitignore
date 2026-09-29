@@ -1,0 +1,4 @@
+NOTES.md
+tmp/
+__pycache__/
+*.pyc

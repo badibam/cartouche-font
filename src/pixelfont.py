@@ -7,6 +7,7 @@ descenders. Column 10 is the gutter between two letters and stays empty.
 One drawing pixel is 64 font units; the em is 1024, the advance 704.
 """
 
+import os
 from pathlib import Path
 
 UPEM = 1024
@@ -23,7 +24,8 @@ DESCENT_PX = -BOTTOM_PX
 LINE_PX = ROWS + 1   # one blank row between two lines of text
 
 ROOT = Path(__file__).resolve().parent.parent
-GLYPHS = ROOT / "glyphs"
+# draw.py points this at a scratch copy, to show what a step would change first.
+GLYPHS = Path(os.environ.get("PIXEL_FONT_GLYPHS") or ROOT / "glyphs")
 
 
 def read_maps(path):

@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+"""Entry point for cartouche-font tasks.
+
+Bare invocation opens the interactive menu; `./run <task>` runs one directly,
+without requiring questionary.
+"""
+
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+SRC = ROOT / "src"
+
+sys.path.insert(0, str(SRC))
+from draw import STEPS  # noqa: E402
+
+
+def script(name, *args):
+    return subprocess.run([sys.executable, str(SRC / f"{name}.py"), *args], cwd=ROOT).returncode
+
+
+def build():
+    """Compile, then prove at once that no untouched glyph moved."""
+    return script("build") or script("check")
+
+
+def check():
+    return script("check")
+
+
+def plank(*text):
+    return script("plank", *text)
+
+
+def draw(*args):
+    return script("draw", *args)
+
+
+ACTIONS = {"build": build, "check": check, "plank": plank, "draw": draw}
+LABELS = {
+    "build": "build             compile the four TTFs into ttf/, then check",
+    "check": "check             every untouched glyph renders like Mono10",
+    "plank": "plank [text]      PNG planks of both weights, in tmp/",
+    "draw": "draw <step>       rerun a drawing step on glyphs/, preview first",
+}
+
+_BACK = object()
+
+
+def pause():
+    try:
+        input("\nEnter to continue ")
+    except (EOFError, KeyboardInterrupt):
+        pass
+
+
+def select(questionary, prompt, choices_map):
+    from questionary import Choice
+    choices = [Choice(label, value) for label, value in choices_map.items()]
+    choices.append(Choice("← back", _BACK))
+    answer = questionary.select(prompt, choices=choices).ask()
+    return _BACK if answer is None else answer
+
+
+def draw_menu(questionary):
+    while True:
+        os.system("clear")
+        print("Rerun a drawing step. It runs on a scratch copy first; nothing is written before you confirm.\n")
+        step = select(questionary, "step", {f"{s:<11} {what}": s for s, what in STEPS.items()})
+        if step is _BACK:
+            return
+        draw(step)
+        pause()
+
+
+def menu():
+    try:
+        import questionary
+        from questionary import Choice, Separator
+    except ImportError:
+        print(
+            "questionary is missing: sudo apt install python3-questionary\n"
+            "Direct invocation still works: ./run <task>",
+            file=sys.stderr,
+        )
+        return 1
+
+    choices = [Separator("Font")]
+    choices += [Choice(LABELS[k], k) for k in ("build", "check", "plank")]
+    choices += [Separator("Drawing"), Choice(LABELS["draw"], "draw")]
+    choices += [Choice("quit", _BACK)]
+
+    while True:
+        os.system("clear")
+        answer = questionary.select("cartouche-font", choices=choices).ask()
+        if answer is None or answer is _BACK:
+            return 0
+        if answer == "draw":
+            draw_menu(questionary)
+            continue
+        ACTIONS[answer]()
+        pause()
+
+
+def usage():
+    print("Usage: ./run [task]\n\nTasks:")
+    for key in ACTIONS:
+        print(f"  {LABELS[key]}")
+    print("\nsrc/extract.py starts over from Mono10 and overwrites the maps; it is not a task.")
+
+
+def main(argv):
+    if not argv:
+        return menu()
+    task = argv[0]
+    if task in ("-h", "--help"):
+        usage()
+        return 0
+    if task not in ACTIONS:
+        print(f"Unknown task: {task}\n", file=sys.stderr)
+        usage()
+        return 1
+    return ACTIONS[task](*argv[1:]) or 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

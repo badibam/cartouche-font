@@ -11,7 +11,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-from pixelfont import CELL_W, GLYPHS, LINE_PX, TOP_PX, read_maps
+from pixelfont import CELL_W, GLYPHS, LINE_PX, ROOT, TOP_PX, read_maps
 
 # Lightness, chroma and hue offset, as Saylune's palette function has them.
 NIGHT = {"bg": (0.20, 0.045, 0), "panel": (0.255, 0.045, 0), "ink": (0.64, 0.018, 0),
@@ -111,3 +111,23 @@ def plank(lines, out, weight="regular", extra=(), scale=3, register="night", pit
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     img.save(out)
     return out
+
+
+SAMPLE = [
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "abcdefghijklmnopqrstuvwxyz",
+    "0123456789 .,;:!?'\"()[]-+=/",
+    "àâäçéèêëîïôöùûüÿœæ «»—…",
+    "".join(chr(cp) for cp in range(0xE010, 0xE029)),
+]
+
+
+def main(texts):
+    lines = [(text, "ink") for text in texts or SAMPLE]
+    for weight in ("regular", "thin"):
+        print(plank(lines, ROOT / "tmp" / f"plank-{weight}.png", weight=weight))
+
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1:])
