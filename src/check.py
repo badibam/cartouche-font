@@ -13,8 +13,8 @@ from fontTools.pens.pointInsidePen import PointInsidePen
 from pixelfont import BOTTOM_PX, CELL_W, ROOT, TOP_PX
 
 PAIRS = [
-    ("upstream/mono10/mono10_regular.ttf", "ttf/saylune_tile_regular.ttf"),
-    ("upstream/mono10/mono10_thin.ttf", "ttf/saylune_tile_thin.ttf"),
+    ("upstream/mono10/mono10_regular.ttf", "ttf/cartouche_regular.ttf"),
+    ("upstream/mono10/mono10_thin.ttf", "ttf/cartouche_thin.ttf"),
 ]
 
 
