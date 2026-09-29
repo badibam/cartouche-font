@@ -1,6 +1,7 @@
 """Render pixel-map text as a PNG plank, to judge glyphs by looking at them.
 
-Colours come from `docs/design/pixel-ui.md`: one hue, prune 301, two registers.
+Colours are Saylune's register, set by eye on its bench and copied here as
+numbers: one hue, prune 301, two registers.
 Out-of-gamut colours lose chroma until they fit, never a channel clipped on its
 own, which would twist the hue.
 """
@@ -12,7 +13,7 @@ from PIL import Image, ImageDraw
 
 from pixelfont import CELL_W, GLYPHS, LINE_PX, TOP_PX, read_maps
 
-# Lightness, chroma and hue offset, read off the bench's palette function.
+# Lightness, chroma and hue offset, as Saylune's palette function has them.
 NIGHT = {"bg": (0.20, 0.045, 0), "panel": (0.255, 0.045, 0), "ink": (0.64, 0.018, 0),
          "dim": (0.40, 0.018, 0), "frameA": (0.66, 0.045, 14), "frameB": (0.40, 0.045, 0)}
 PALE = {"bg": (0.90, 0.075, 0), "panel": (0.845, 0.075, 0), "ink": (0.40, 0.018, 0),

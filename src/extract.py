@@ -4,19 +4,16 @@ Run once. From then on the pixel maps are the source of truth and this script
 only serves to prove that nothing was lost on the way in.
 """
 
-import sys
-from pathlib import Path
-
 from fontTools.ttLib import TTFont
 from fontTools.pens.pointInsidePen import PointInsidePen
 
-from pixelfont import BOTTOM_PX, CELL_W, GLYPHS, TOP_PX, cells_to_rows, write_maps
+from pixelfont import BOTTOM_PX, CELL_W, GLYPHS, ROOT, TOP_PX, cells_to_rows, write_maps
 
 DROPPED = {".notdef", ".null", "nonmarkingreturn"}
 
 SOURCES = {
-    "regular": "tmp/Mono10 - Community Pack/TTF/Mono10 Regular.ttf",
-    "thin": "tmp/Mono10 - Community Pack/TTF/Mono10 Thin.ttf",
+    "regular": ROOT / "upstream/mono10/mono10_regular.ttf",
+    "thin": ROOT / "upstream/mono10/mono10_thin.ttf",
 }
 
 HEADER = """# Cartes de pixels — {weight}, extrait de Mono10 (SIL OFL 1.1).
@@ -37,9 +34,9 @@ def raster(glyphset, name):
     return cells
 
 
-def main(root):
-    for weight, rel in SOURCES.items():
-        font = TTFont(root / rel)
+def main():
+    for weight, src in SOURCES.items():
+        font = TTFont(src)
         glyphset = font.getGlyphSet()
         by_name = {n: c for c, n in sorted(font.getBestCmap().items())}
         maps = {}
@@ -56,4 +53,4 @@ def main(root):
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1] if len(sys.argv) > 1 else "/mnt/data/OUTILS/saylune"))
+    main()

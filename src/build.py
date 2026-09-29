@@ -12,7 +12,7 @@ from pathlib import Path
 from fontTools.fontBuilder import FontBuilder
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 
-from pixelfont import (BOTTOM_PX, CAP_PX, CELL_W, GLYPHS, PX, TOP_PX, UPEM, X_PX,
+from pixelfont import (ROOT, BOTTOM_PX, CAP_PX, CELL_W, GLYPHS, PX, TOP_PX, UPEM, X_PX,
                        read_maps, rows_to_cells)
 
 FAMILY = "Saylune Tile"
@@ -158,4 +158,4 @@ def main(out_dir):
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).parent / "ttf")
+    main(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "ttf")

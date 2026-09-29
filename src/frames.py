@@ -1,6 +1,6 @@
 """Cut the mockup's frame into glyphs.
 
-The bench (`tmp/pixel-bench.html`) paints a frame as a rounded rectangle: a
+Saylune's pixel bench painted a frame as a rounded rectangle: a
 border four pixels thick, corners of radius four, the two outer pixels in the
 light tone and the two inner ones in the dark one. The same distance is
 computed here on a rectangle of whole cells, and the cells are then read back as

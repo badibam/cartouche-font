@@ -1,7 +1,7 @@
 """The phonemes of the analysis: fifteen sounds the Latin alphabet does not write.
 
-`ui/AnalysisReadout.kt` prints the model's inventory, which is IPA
-(`../bench/affinity.json`): thirty-eight symbols over thirty-seven characters,
+Saylune's `ui/AnalysisReadout.kt` prints the model's inventory, which is IPA
+(`bench/affinity.json` there): thirty-eight symbols over thirty-seven characters,
 of which twenty-two are ordinary letters the font already had.
 
 Three of the rest are an existing letter turned or mirrored, seven more are one

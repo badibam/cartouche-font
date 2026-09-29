@@ -1,4 +1,4 @@
-"""Pixel-map source of truth for the app font.
+"""Pixel-map source of truth for the font.
 
 A glyph is an 11x14 grid of '#' and '.', rows written from y=11 down to y=-2.
 Rows 0 to 9 hold the capitals, 10 and 11 the accents above them, -1 and -2 the
@@ -22,7 +22,7 @@ ASCENT_PX = TOP_PX + 1
 DESCENT_PX = -BOTTOM_PX
 LINE_PX = ROWS + 1   # one blank row between two lines of text
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 GLYPHS = ROOT / "glyphs"
 
 
