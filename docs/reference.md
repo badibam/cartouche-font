@@ -40,7 +40,8 @@ Dans `src/`, autour de `pixelfont.py` (la boîte, la lecture et l'écriture des 
 Les étapes de dessin, que `draw` relance :
 
 - `descenders.py` — redessine `g j p q y` avec leur queue sous la ligne de base.
-- `accents.py` — compose les 44 lettres accentuées, dérive les deux tirets du trait d'union, et pose les glyphes de `drawn.py` (ligatures, fractions, signes).
+- `accents.py` — compose les 62 lettres accentuées et les accents seuls, dérive les deux tirets du trait d'union, et pose les glyphes de `drawn.py` (ligatures, fractions, signes). Le rond en chef n'a que deux rangées : c'est une arche, que le haut de la lettre ferme.
+- `western.py` — le reste de Windows-1252, les flèches de texte et les signes de comparaison. Ce qui est un autre glyphe déplacé ou coupé en est tiré (les guillemets bas, le moins, le point médian, les flèches de la zone privée) ; le reste est dessiné.
 - `frames.py` — découpe les seize pièces de cadre depuis la formule du banc de Saylune.
 - `furniture.py` — les vingt-cinq symboles d'interface de la zone privée. Ce qui est un symbole plein — le disque, le triangle, la jauge, le cœur, le micro, la loupe, l'œil, le cadenas, l'histogramme, les points — est identique dans les deux graisses ; ce qui est un trait — les flèches, la coche, la croix, les curseurs, le retour, la flèche circulaire — s'amincit avec le reste.
 - `big.py` — **les symboles une seconde fois, dans une boîte de 22 × 22**, pour la seconde taille. Chaque glyphe y est écrit comme les formes dont il est fait — disque, segment, anneau, polygone — avec l'épaisseur de trait en paramètre : 4 pixels en Regular, 2 en Thin. Ils portent **les mêmes codets** que les symboles ordinaires, dans la famille `Cartouche Big` : l'app demande le même caractère et choisit la famille selon ce qu'elle dessine, un bouton ou une ligne de texte.

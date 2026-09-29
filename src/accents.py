@@ -2,7 +2,10 @@
 
 An accent is drawn once and posed on a base letter: rows 9 and 8 over a
 lowercase, 11 and 10 over a capital, which is why a capital keeps its full
-height. The cedilla hangs in the two rows the descenders opened.
+height. The cedilla hangs in the two rows the descenders opened. The ring has
+two rows only, so it is an arch that the top of its letter closes.
+
+Alone, an accent sits where it sits over a lowercase.
 
 Ligatures and signs have no base to sit on, so they are drawn outright.
 """
@@ -16,12 +19,20 @@ MARKS = {
         "grave": ([2, 3, 4, 5], [4, 5, 6, 7]),
         "circumflex": ([3, 4, 5, 6], [1, 2, 7, 8]),
         "dieresis": ([2, 3, 6, 7], [2, 3, 6, 7]),
+        "tilde": ([2, 3, 4, 7, 8], [1, 2, 5, 6, 7]),
+        "ring": ([3, 4, 5, 6], [2, 3, 6, 7]),
+        "caron": ([1, 2, 7, 8], [3, 4, 5, 6]),
+        "macron": ([1, 2, 3, 4, 5, 6, 7, 8], [1, 2, 3, 4, 5, 6, 7, 8]),
     },
     "thin": {
         "acute": ([5, 6], [3, 4]),
         "grave": ([3, 4], [5, 6]),
         "circumflex": ([4, 5], [3, 6]),
         "dieresis": ([3, 6], [3, 6]),
+        "tilde": ([3, 4, 7], [2, 5, 6]),
+        "ring": ([4, 5], [3, 6]),
+        "caron": ([3, 6], [4, 5]),
+        "macron": ([1, 2, 3, 4, 5, 6, 7, 8], []),
     },
 }
 
@@ -32,23 +43,33 @@ CEDILLA = {
 
 # base letter -> the accents it takes, and the codepoint of each result
 ACCENTED = {
-    "a": {"acute": 0x00E1, "grave": 0x00E0, "circumflex": 0x00E2, "dieresis": 0x00E4},
+    "a": {"acute": 0x00E1, "grave": 0x00E0, "circumflex": 0x00E2, "dieresis": 0x00E4,
+          "tilde": 0x00E3, "ring": 0x00E5},
     "e": {"acute": 0x00E9, "grave": 0x00E8, "circumflex": 0x00EA, "dieresis": 0x00EB},
-    "i": {"acute": 0x00ED, "circumflex": 0x00EE, "dieresis": 0x00EF},
-    "o": {"acute": 0x00F3, "circumflex": 0x00F4, "dieresis": 0x00F6},
+    "i": {"acute": 0x00ED, "grave": 0x00EC, "circumflex": 0x00EE, "dieresis": 0x00EF},
+    "n": {"tilde": 0x00F1},
+    "o": {"acute": 0x00F3, "grave": 0x00F2, "circumflex": 0x00F4, "dieresis": 0x00F6,
+          "tilde": 0x00F5},
+    "s": {"caron": 0x0161},
     "u": {"acute": 0x00FA, "grave": 0x00F9, "circumflex": 0x00FB, "dieresis": 0x00FC},
-    "y": {"dieresis": 0x00FF},
-    "A": {"acute": 0x00C1, "grave": 0x00C0, "circumflex": 0x00C2, "dieresis": 0x00C4},
+    "y": {"acute": 0x00FD, "dieresis": 0x00FF},
+    "z": {"caron": 0x017E},
+    "A": {"acute": 0x00C1, "grave": 0x00C0, "circumflex": 0x00C2, "dieresis": 0x00C4,
+          "tilde": 0x00C3, "ring": 0x00C5},
     "E": {"acute": 0x00C9, "grave": 0x00C8, "circumflex": 0x00CA, "dieresis": 0x00CB},
-    "I": {"acute": 0x00CD, "circumflex": 0x00CE, "dieresis": 0x00CF},
-    "O": {"acute": 0x00D3, "circumflex": 0x00D4, "dieresis": 0x00D6},
+    "I": {"acute": 0x00CD, "grave": 0x00CC, "circumflex": 0x00CE, "dieresis": 0x00CF},
+    "N": {"tilde": 0x00D1},
+    "O": {"acute": 0x00D3, "grave": 0x00D2, "circumflex": 0x00D4, "dieresis": 0x00D6,
+          "tilde": 0x00D5},
+    "S": {"caron": 0x0160},
     "U": {"acute": 0x00DA, "grave": 0x00D9, "circumflex": 0x00DB, "dieresis": 0x00DC},
-    "Y": {"dieresis": 0x0178},
+    "Y": {"acute": 0x00DD, "dieresis": 0x0178},
+    "Z": {"caron": 0x017D},
 }
 
-NAMES = {
-    "acute": "acute", "grave": "grave", "circumflex": "circumflex", "dieresis": "dieresis",
-}
+# the accents alone: the spacing forms of Windows-1252
+SPACING = {"dieresis": 0x00A8, "macron": 0x00AF, "acute": 0x00B4, "circumflex": 0x02C6,
+           "tilde": 0x02DC}
 
 CEDILLAS = {"c": 0x00E7, "C": 0x00C7}
 
@@ -87,7 +108,7 @@ def main():
             top = TOP_PX if base.isupper() else 9
             for accent, cp in accents.items():
                 hi, lo = marks[accent]
-                name = f"{base}{NAMES[accent]}"
+                name = f"{base}{accent}"
                 maps[name] = (cp, place(rows, hi, lo, top))
                 added += 1
 
@@ -95,6 +116,13 @@ def main():
         for base, cp in CEDILLAS.items():
             maps[f"{base.lower()}cedilla" if base.islower() else "Ccedilla"] = (
                 cp, place(maps[base][1], hi, lo, -1))
+            added += 1
+        maps["cedilla"] = (0x00B8, place(blank(), hi, lo, -1))
+        added += 1
+
+        for accent, cp in SPACING.items():
+            hi, lo = marks[accent]
+            maps[accent] = (cp, place(blank(), hi, lo, 9))
             added += 1
 
         for name, (cp, rows) in DRAWN[weight].items():

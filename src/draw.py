@@ -25,6 +25,7 @@ STEPS = {
     "big": "the symbols again, for the second size",
     "phonemes": "the phonemes Saylune's analysis prints",
     "scramble": "the scrambled letters",
+    "western": "the rest of Windows-1252, the text arrows and signs",
 }
 
 
