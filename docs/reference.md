@@ -66,4 +66,4 @@ Une app qui a besoin de codets privés les réserve ici avant de les dessiner, p
 
 Dérivée de **Mono10**, de Jesse D. Jimenez (Community Pack, 2020), sous SIL OFL 1.1 — voir `OFL.txt`. La police dérivée porte un autre nom, `Cartouche`, et reste sous la même licence. Les TTF d'origine sont dans `upstream/mono10/`, avec leur licence : `check` et `extract.py` les lisent.
 
-Le dépôt est destiné à être public sur GitHub, pour que F-Droid puisse remonter des TTF embarqués dans une app jusqu'à leur source.
+Le dépôt est public, sur https://github.com/badibam/cartouche-font, pour que F-Droid puisse remonter des TTF embarqués dans une app jusqu'à leur source. Les scripts de `src/` sont sous GPL-3.0-or-later (`LICENSE`) ; le README, que GitHub affiche, se relit avant chaque publication.

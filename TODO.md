@@ -1,3 +1,2 @@
 # TODO
 
-- **Publier le dépôt sur GitHub** avant la première soumission à F-Droid d'une app qui embarque la police : F-Droid doit pouvoir remonter du TTF à sa source.
